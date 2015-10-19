@@ -107,7 +107,7 @@ public class Hand {
 		return Ace;
 	}
 
-	public void PickBestHand(ArrayList<Hand> Hands) throws exHand{
+	public Hand PickBestHand(ArrayList<Hand> Hands) throws exHand{
 		Hand BestHand = new Hand();
 		BestHand.ScoreHand(eHandStrength.HighCard, 0, 0, null);
 		
@@ -139,6 +139,10 @@ public class Hand {
 		
 		// Set the best cards in the hand equal to your evaluation
 		this.BestCardsInHand = TestedHands.get(0).getCards();
+		
+		Hand returnHand = new Hand(BestCardsInHand);
+		returnHand.EvalHand();
+		return returnHand;
 	}
 	
 	public static Hand EvalHand(ArrayList<Card> SeededHand) {
@@ -164,7 +168,7 @@ public class Hand {
 
 		// Test to see if there are any wild cards or jokers in the deck
 		// If there are, record position of the first wild/joker and run Explosion method
-		// After Explosion method runs, CardsInHand = Best card combination possible
+		// After Explosion method runs, BestCardsInHand = Best card combination possible
 		
 		int position = 0;
 		// If a deck has a wild or Joker in it, it will get caught in this loop and forced to explode
@@ -477,9 +481,8 @@ public class Hand {
 
 
 	private void Explosion(ArrayList<Card> MyCardsInHand, int testPosition) throws exHand{
-		// TODO Auto-generated method stub
 		// Explode hand!
-		// For every testPosition, create 52 instances of hands
+		// For every testPosition, create 52 instances of hand, replacing input Joker
 		
 		ArrayList<Hand> explodedHands = new ArrayList<Hand>();
 
@@ -497,6 +500,7 @@ public class Hand {
 			explodedHands.add(H);	
 		}
 	
+		// Run PickBestHand method to determine best Hand
 		this.PickBestHand(explodedHands);	
 
 	}
